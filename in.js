@@ -22,18 +22,8 @@ amninHelper.getAuth = (req) => {
  * Get client input (body, query, params)
  */
 amninHelper.getInput = (req) => {
-
-    const _getParams = function(req){
-        const { params } = req;
-        return params;
-    }
-    if(!helper.checkSymbol(req, REQ_INPUT)){
-        throw new Error('AMN: unable to find request');
-    }
-    const amnin = req[REQ_INPUT];
-    const { in : clientInput } = amnin;
-    const params = _getParams(req);
-    return { ...clientInput, ...params };
+    const { body, params, query } = req;
+    return Object.assign(body, param, query);
 }
 
 amninHelper.getFiles = (req) => {
