@@ -1,6 +1,4 @@
 # AMN
----
-
 In the first instance `amn` is the helper wrapper I developed for myself to work with expressjs. As long as I go futher the fuctionality of `amn` grows and evolve. 
 Onwards I equip all my back-ends with amn as it really help me to simplify the architecture, wrigh less code, and boost my productivity.
 `Amn` provides the following capabilities:
