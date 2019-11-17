@@ -12,4 +12,3 @@ In the first instance, amn is the helper wrapper I developed for myself to work 
 -	Prettification capability to better control data you return to a client.
 -	[under construction] Client’s input validation via schema employ [@hapi/joi](https://hapi.dev/)
 -	[under construction] Decorators
--	[under construction] Streamline error handling.
