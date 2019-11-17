@@ -10,7 +10,7 @@ Onwards I equip all my back-ends with amn as it really help me to simplify the a
 -	Helper middlewares to work with request, response.
 -	Helper functions to work with request and client input.
 -	Simplify and better orange your response code
--	Prettification capability to better control data you return to a client.\
+-	Prettification capability to better control data you return to a client.
 -	[under construction] Client’s input validation via schema employ @hapi/joi
 -	[under construction] Decorators
 -	[under construction] Streamline error handling.
