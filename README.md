@@ -1,4 +1,4 @@
-# amn
+# AMN
 ---
 
 In the first instance `amn` is the helper wrapper I developed for myself to work with expressjs. As long as I go futher the fuctionality of `amn` grows and evolve. 
