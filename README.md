@@ -8,7 +8,9 @@ In the first instance, amn is the helper wrapper I developed for myself to work 
 `Amn` provides the following capabilities:
 -	Helper middlewares to work with request, response.
 -	Helper functions to work with request and client input.
--	Simplify and better orange your response code
+-	Centralize and Simplify your response code, provides a response back to client in a single place.
 -	Prettification capability to better control data you return to a client.
--	[under construction] Client’s input validation via schema employ [@hapi/joi](https://hapi.dev/)
+-	Client’s input validation via schema employ [@hapi/joi](https://hapi.dev/)
+-   Introduce own error class, which extends node js Error and provides the capability to deliver response status along with error message
+-   Provide error middleware to support extended erorr info (compatible with Error node js class)
 -	[under construction] Decorators

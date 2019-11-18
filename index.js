@@ -8,6 +8,7 @@
 const debug = require('debug')('amn:core');
 const _static = require('./static');
 const helper = require('./misc');
+const error = require('./error');
 
  // global static name 
 const GLOBAL_AMN_KEY = _static.global;
@@ -138,10 +139,10 @@ amn.init = (req, res, next) => {
     next();
 }
 
-amn.validate = async (schema) => 
+amn.validate = (schema) => 
     async (req, res, next) =>{
         try{
-            const input = _getInput(req);
+            const input = amnin.getInput(req);
             debug('INPUT: %O', input);
             const { error : validationError } = await schema.validate(input);
             const valid = validationError == null; 
@@ -153,7 +154,7 @@ amn.validate = async (schema) =>
                 debug('Validation failed: %O', details);
                 const message = details.map(i => i.message).join(',')
                 debug('Validation failed: %s', message);
-                throw error.create( error.GENERAL.BAD_REQUEST, message );
+                throw error({ code : 400, message : 'BAD_REQUEST', em : 'client request broken' }, message);
             }
       }
       catch(err){
@@ -223,14 +224,21 @@ amn.response = (req, res, next) => {
 }
 
 global[GLOBAL_AMN_KEY] = {
-    // middlewares to be build in into pipeline
-    init : amn.init,
-    response : amn.response,
+    // helper to create an error 
+    error : error,
+    // amn middlewares (mw) !
+    mw : {
+        // middlewares to be build in into pipeline
+        init : amn.init, // init amn in Request & Responce node js objects 
+        validate : amn.validate, // validate client's input
+        response : amn.response, // central lpace to handly the responce to a client. 
+        error : require('./error/mw') // extended error handler
+    },
     // utility function to 
     use : amn.use,
     in : amnin,
     out : { 
-        setResponse : amnout.setResponse 
+        reply : amnout.setResponse 
     },
     // all 
     maps : {

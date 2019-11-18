@@ -2,6 +2,7 @@
 
 const _static = require('./static');
 const helper = require('./misc');
+const error = require('./error');
 
 const amninHelper = {};
 
@@ -20,11 +21,32 @@ amninHelper.getAuth = (req) => {
 
 /**
  * Get client input (body, query, params)
+ * @param {Request} req node js Request object
+ * @param {source} source [optional] one of property to hold clients data (body, params, query)
  */
-amninHelper.getInput = (req) => {
-    const { body, params, query } = req;
-    return Object.assign(body, param, query);
+amninHelper.getInput = (req, source) => {
+    if(!source){
+        const { body, params, query } = req;
+        return Object.assign(body, params, query);
+    }
+    if(!!source && (source === 'body' || source === 'params' || source === 'query')){
+        const input = req[source];
+        if(!input) {
+            throw error({code : 500, message : 'INTERNAL_SERVER_ERROR', em: 'AMN: internal critical error' }, `unable to read client input from ${source}`);
+        }
+        //return Object.assign({}, { ...input } );
+        return input;
+    }
+    throw error({code : 500, message : 'INTERNAL_SERVER_ERROR', em: 'AMN: internal critical error' }, `property is not valid`);
 }
+
+/**
+ * Get client input (body, query, params)
+ */
+// amninHelper.getInput = (req) => {
+//     const { body, params, query } = req;
+//     return Object.assign(body, params, query);
+// }
 
 amninHelper.getFiles = (req) => {
     const { files } = req;

@@ -11,7 +11,7 @@ const RES_OUTPUT = _static.response;
 //const output = 'amnout'; // output data from server ... 
 
 //amnoutHelper.setResponse = (res, { prettify, data, empty = false, created = false} ) => {
-amnoutHelper.setResponse  = (res, { name, data, empty = false} ) => {
+amnoutHelper.setResponse  = (res, { reference, data, empty = false} ) => {
     // general check .... 
     // const amnout = res[output];
     debug('AMN OUT.response: %s', RES_OUTPUT);
@@ -41,18 +41,18 @@ amnoutHelper.setResponse  = (res, { name, data, empty = false} ) => {
         throw new Error('AMN: data object is not provided');
     }
     // [1] preffity is a string
-    if(typeof(name) !== 'string'){
-        throw new Error('AMN: pretty name is not provided');
+    if(typeof(reference) !== 'string'){
+        throw new Error('AMN: pretty reference is not provided');
     }
-    debug('REF: %s', name);
-    const func = global[GLOBAL_AMN_KEY].maps.prettify.get(name);
+    debug('REF: %s', reference);
+    const func = global[GLOBAL_AMN_KEY].maps.prettify.get(reference);
     debug('FUNC: %s', func);
     if(typeof(func) !== 'function'){
         throw new Error('AMN: pretty function is not found');
     }
 
-    res[RES_OUTPUT].data.set(name, data); // we can store various data
-    res[RES_OUTPUT].reference = name; // must be a string, a reference to function ... 
+    res[RES_OUTPUT].data.set(reference, data); // we can store various data
+    res[RES_OUTPUT].reference = reference; // must be a string, a reference to function ... 
     res[RES_OUTPUT].prettification = func; // must be a function to run prettification...
     res[RES_OUTPUT].content = true;
     res[RES_OUTPUT].forward = false; // do a response ...-
