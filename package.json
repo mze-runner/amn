@@ -1,0 +1,29 @@
+{
+  "name": "amn",
+  "version": "0.0.1",
+  "description": "AMN is a wrapper on top of express. It provides middlewares and helper functions to simplify your workflow.",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mze-runner/amn.git"
+  },
+  "keywords": [
+    "express",
+    "nodejs",
+    "amn",
+    "schema",
+    "validation"
+  ],
+  "author": "mzerunner",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mze-runner/amn/issues"
+  },
+  "homepage": "https://github.com/mze-runner/amn#readme"
+}

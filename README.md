@@ -14,3 +14,14 @@ In the first instance, amn is the helper wrapper I developed for myself to work 
 -   Introduce own error class, which extends node js Error and provides the capability to deliver response status along with error message
 -   Provide error middleware to support extended erorr info (compatible with Error node js class)
 -	[under construction] Decorators
+
+### Handlers 
+
+### Middlewares
+
+### Prettification
+
+### Validation
+
+### Error handler
+
