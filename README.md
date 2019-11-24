@@ -16,9 +16,42 @@ In the first instance, amn is the helper wrapper I developed for myself to work 
 -   Provide error middleware to support extended erorr info (compatible with Error node js class)
 -	[under construction] Decorators
 
-### Handlers 
+### Request helpers
+
+```javascript
+amn.in.method(req)
+```
+
+```javascript
+amn.in.input(req, source)
+```
+
+```javascript
+amn.in.files(req)
+```
+
+### Responce helper 
+
+```javascript
+amn.out.reply(res, { empty : true })
+```
+
+```javascript
+amn.out.reply(res, { name : 'myReplyPrettification', data : { ..., ... } })
+```
+
+By default, amn has the only build-in prettificator - 'FORWARD'.
+Basicaly, it's do nothing and just forward your data directly to res.json.
+
+```javascript
+amn.out.reply(res, { name : 'FORWARD', data : { ..., ... } })
+```
 
 ### Middlewares
+
+```javascript
+amn.mw.response(req, res, next)
+```
 
 ### Store 
 
