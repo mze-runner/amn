@@ -8,6 +8,7 @@ In the first instance, amn is the helper wrapper I developed for myself to work 
 `Amn` provides the following capabilities:
 -	Helper middlewares to work with request, response.
 -	Helper functions to work with request and client input.
+-   Introduce key, value store to help move data through middleware chain.
 -	Centralize and Simplify your response code, provides a response back to client in a single place.
 -	Prettification capability to better control data you return to a client.
 -	Client’s input validation via schema employ [@hapi/joi](https://hapi.dev/)
@@ -18,6 +19,24 @@ In the first instance, amn is the helper wrapper I developed for myself to work 
 ### Handlers 
 
 ### Middlewares
+
+### Store 
+
+AMN store is a simple key, value storage to help to move data through your middleware chain.
+
+```javascript
+const amn = require('amn');
+
+const OBJECT_NAME = 'objectName';
+
+const myObjectToStore = { ... };
+
+amn.store.push(req, { name : OBJECT_NAME, data: myObjectToStore});
+
+const myObject = amn.store.pop(req, {{ name : OBJECT_NAME});
+// return myObjectToStore
+
+```
 
 ### Prettification
 
