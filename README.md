@@ -96,7 +96,7 @@ app.user('/api',
 Additionally, amn through `amn.out.reply` and `amn.mw.response` allow you to define custom data post handlers.
 Basically, you can pass to `amn.out.reply` row data, not prepared for a client. Associated prettification function should take care to preprare data and do not allow to leak unwanted for others eyes pieces of information. 
 
-Please see ### Prettification
+Please see [Prettification](https://github.com/mze-runner/amn#amn-prettification)
 
 ### [Middlewares](#amn-middlewares)
 
