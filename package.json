@@ -25,5 +25,6 @@
   "bugs": {
     "url": "https://github.com/mze-runner/amn/issues"
   },
-  "homepage": "https://github.com/mze-runner/amn#readme"
+  "homepage": "https://github.com/mze-runner/amn#readme",
+  "dependencies": {}
 }
