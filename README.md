@@ -93,7 +93,7 @@ app.user('/api',
     amn.mw.response
 );
 ```
-Additionally, amn through `amn.out.reply` and `amn.mw.response` allow you yo define custom data post handlers.
+Additionally, amn through `amn.out.reply` and `amn.mw.response` allow you to define custom data post handlers.
 Basically, you can pass to `amn.out.reply` row data, not prepared for a client. Associated prettification function should take care to preprare data and do not allow to leak unwanted for others eyes pieces of information. 
 
 Please see ### Prettification
@@ -106,7 +106,7 @@ amn.mw.response(req, res, next)
 
 ### [Store](#amn-store)
 
-AMN store is a simple key, value storage to help to move data through your middleware chain.
+AMN store is a simple key-value storage to help to move data through your middleware chain.
 
 ```javascript
 const amn = require('amn');
