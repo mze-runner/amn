@@ -1,6 +1,6 @@
 # [AMN](#amn)
 
-In the first instance, amn is the helper wrapper I developed for myself to work with [express](https://expressjs.com/). As long as I go further, the functionality of amn grows and evolve. Onwards I equip all my back-ends with amn as it helps me to simplify the architecture, write less code, and boost my productivity.
+In the first instance, amn is the wrapper I developed for myself to work with [express](https://expressjs.com/). As long as I go further, the functionality of amn grows and evolve. Onwards I equip all my back-ends with amn as it helps me to simplify the architecture, write less code, and boost my productivity.
 
 > Why amn? I pick the name of the city from the great video game Baldur's Gate II: Shadows of Amn.
 
@@ -11,7 +11,7 @@ In the first instance, amn is the helper wrapper I developed for myself to work 
 - `amn.validate` Client’s input validation via schema employ [@hapi/joi](https://hapi.dev/)
 - `amn.in` Helper functions to work with request and client input.
 - `amn.store` Introduce a key-value store to help share data through the middleware chain.
-- `AmnError` class introduces error class, which extends node js Error and provides the capability to deliver response status along with error message.
+- `AmnError` introduces error class, which extends node js Error and provides the capability to deliver response status along with error message.
 - [under construction] Decorators
 
 
@@ -45,11 +45,11 @@ myServiceMiddleware = (req, res, next) => {
     const messageToClient = { ... , ... , ... };
 
     amn.out.reply(res, { name : 'myPrettificationFunc', data : messageToClient} ); // amn.out.reply store data and alias for prettification
-    mext(); // this is mandatory to call next once middleware done it's job
+    next(); // this is mandatory to call next once middleware done it's job
 }
 
 // In case you do not need to send a body to the client, you can simply call amn.out.reply wity empty - true
-amn.out.reply(res, { empty : true } ); // return to client empty bosy and status 201
+amn.out.reply(res, { empty : true } ); // return to client empty body and status 201
 ```
 
 By default, amn has the only build-in prettificator - 'FORWARD'.
@@ -73,16 +73,16 @@ router.put('/your/path'
 
 ### [Prettification](#amn-prettification)
 
-As long you are working with your data with server side service layer, your data most likely has values you are not keen to share the the client. 
-It means before you reply you hvae to clean data up and prepare it. In case you have pretty much end-point which have to return same object to a client you need to be sure you post-process your data before it out. 
-AMN Preffification is came to simply this flow and centrolize the logic you want to have at each time your server have to return same object to teh client. 
-Besides, you be able to deeply customize the response, e.g. remove adat from response, add new fields, adjust or fully rewrite values your back-end share with outter world. 
+As long you are working with your data within server-side service layer, your data most likely has values you are not keen to share the the client. 
+It means before you reply you have to clean data up and prepare it. In case you have pretty much end-points which have to return same object to a client you need to be sure you post-process your data before it out.
+AMN Preffification is came to simply this flow and centrolize the logic you want to have at each time your server have to return same object to the client. 
+Besides, you be able to deeply customize the response, e.g. remove data from response, add new fields, adjust or fully rewrite values your back-end share with outter world.
 
-In order to leverage this AMN feature, in the forst instance you have to register all your own prettification functions. 
+In order to leverage this AMN feature, in the first instance you have to register all your own prettification functions. 
 
 ```javascript 
 const foo = ({ ..., ..., ... }) => {
-    // do much stuff with into data
+    // do much stuff with your data
     return { ..., ..., ...};
 }
 /**
@@ -92,17 +92,34 @@ const foo = ({ ..., ..., ... }) => {
 amn.prettify('myPrettificationFunc', foo); 
 ```
 
-Once your register all your custome post-processing functions, the fcuntions become avaliable to `amn.out.reply`
+Once your register all your custome post-processing functions, the functions become avaliable to `amn.out.reply`
 
 ```javascript 
 amn.out.reply(res, { name : 'myPrettificationFunc', data : yourRowData } ); // amn.out.reply store data and alias for prettification
 ```
 
-`amn.mw.response` middleware will check whether resonse data and pretification function avaliable to run your code behind the scene.
+`amn.mw.response` middleware will check whether resonse data and pretification function avaliable to run your code behind the scene before sending anything to the cleint.
 
 ### [Validation](#amn-validation)
 
- TBD
+AMN delegeates all the validation logic to [@hapi/joi](https://hapi.dev/).
+
+```javascript 
+
+const validationSchema = Joi.object().keys({
+    username : Joi.string().required(),
+    password : Joi.string().required(),
+});
+
+router.post('/signin'
+    , amn.mw.validate(validationSchema, 'body') // perform validatino only fot 'body'
+    , yourSinginMiddleware
+);
+```
+
+Needless to say, the second parameter have to be one of the following: 'body', 'params', and 'query'. Or, you can ommit it and in this case AMN perform valisation across 'body', 'params', and 'query' all together.
+
+> AMN has no dependencies, hence, it's your responsibility to install [@hapi/joi](https://hapi.dev/) package before use `amn.validate`.
 
 ### [Request helpers](#amn-request-helpers)
 
@@ -133,16 +150,18 @@ const query = amn.in.input(req, 'query');
 ```
 
 ```javascript
+// return uploaded files array (if any)
 amn.in.files(req)
 ```
 
 ```javascript
+// return reques method
 amn.in.method(req);
 ```
 
 ### [Store](#amn-store)
 
-AMN store is a simple key-value storage to help to move data through your middleware chain.
+AMN store is a simple key-value storage to help to share data through your middleware chain.
 
 ```javascript
 const amn = require('amn');
@@ -155,11 +174,22 @@ amn.store.push(req, { name : OBJECT_NAME, data: myObjectToStore});
 
 const myObject = amn.store.pop(req, {{ name : OBJECT_NAME});
 // return myObjectToStore
-
 ```
 
 ### [Amn Error class](#amn-error-class)
 
-### [Error middleware](#amn-error-handler)
+`AmnError` class extends node js `Error` class and add responce status and extra message. 
+You should not call `AmnError` directly, the `amn.error()` create and return instance of the class.
 
+```javascript
+// all parameters are optional
+const UNAUTHORIZED =  { code : 401, message : 'UNAUTHORIZED', em : 'user is not authorized' };
+
+throw amn.error(UNAUTHORIZED);
+```
+
+### [Error middleware](#amn-error-handler)
+To support `AmnError`, amn provides own error middleware.
+
+Just simply add `amn.mw.error` to middleware pipline.
 
