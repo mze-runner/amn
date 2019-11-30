@@ -28,7 +28,7 @@ To build-in amn into your middleware pipeline, you have to call `amn.init` befor
 
 // you server.js routers call may looks like this.
 app.user('/api', 
-    amn.init,  // please note `amn init` first middleware at the router middlewares pipeline
+    amn.mw.init,  // please note `amn init` first middleware at the router middlewares pipeline
     yourControllers, 
     amn.mw.response // `amn.mw.response` close the chain and call `res.json(...) 
 );
