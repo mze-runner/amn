@@ -111,13 +111,19 @@ const validationSchema = Joi.object().keys({
     password : Joi.string().required(),
 });
 
-router.post('/signin'
-    , amn.mw.validate(validationSchema, 'body') // perform validatino only fot 'body'
+router.post('/resources'
+    , amn.mw.validate(validationSchema, 'body') // perform validatino over input on body 
     , yourSinginMiddleware
+);
+
+router.put('/resources/:id'
+    , amn.mw.validate(validationResourceID, 'params') // perform validation over :id param 
+    , amn.mw.validate(validationBody, 'body') // perform validatino over input on body 
+    , yourServiceMiddleware
 );
 ```
 
-Needless to say, the second parameter have to be one of the following: 'body', 'params', and 'query'. Or, you can ommit it and in this case AMN perform valisation across 'body', 'params', and 'query' all together.
+Needless to say, the second parameter have to be one of the following: 'body', 'params', or 'query'. But you can ommit it and in this case AMN perform validation across 'body', 'params', and 'query' all together. Please note, this is not recommended scenario!
 
 > AMN has no dependencies, hence, it's your responsibility to install [@hapi/joi](https://hapi.dev/) package before use `amn.validate`.
 
@@ -155,7 +161,7 @@ amn.in.files(req)
 ```
 
 ```javascript
-// return reques method
+// return request method
 amn.in.method(req);
 ```
 
@@ -164,16 +170,23 @@ amn.in.method(req);
 AMN store is a simple key-value storage to help to share data through your middleware chain.
 
 ```javascript
-const amn = require('amn');
-
 const OBJECT_NAME = 'objectName';
 
 const myObjectToStore = { ... };
 
 amn.store.push(req, { name : OBJECT_NAME, data: myObjectToStore});
 
-const myObject = amn.store.pop(req, {{ name : OBJECT_NAME});
+const myObject = amn.store.pop(req, { name : OBJECT_NAME});
 // return myObjectToStore
+```
+
+In case an object hasn't been placed into store `amn.store.pop` by default will throw and error. Nevertheless, you can pass `strict : false` to force the function to ignore missing data and return `undefined`.
+
+```javascript
+amn.store.push(req, { name : OBJECT_NAME, data: undefined });
+
+const myObject = amn.store.pop(req, { name : OBJECT_NAME, strict : false});
+// return undefined
 ```
 
 ### [Amn Error class](#amn-error-class)
@@ -182,10 +195,14 @@ const myObject = amn.store.pop(req, {{ name : OBJECT_NAME});
 You should not call `AmnError` directly, the `amn.error()` create and return instance of the class.
 
 ```javascript
-// all parameters are optional
-const UNAUTHORIZED =  { code : 401, message : 'UNAUTHORIZED', em : 'user is not authorized' };
+/**
+ * @param {number} status - http status code
+ * @param {string} code - error code
+ * @param {string} message - text message to support error code 
+ * @param {string} exp - [optional] explanation of error nature
+ **/
 
-throw amn.error(UNAUTHORIZED);
+throw amn.error({ status : 401, code : 'UNAUTHORIZED', message : 'user is not authorized', exp : 'extra message to explain more if needed' );
 ```
 
 ### [Error middleware](#amn-error-handler)
