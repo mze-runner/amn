@@ -1,6 +1,6 @@
 {
   "name": "amn",
-  "version": "0.1.0",
+  "version": "0.0.4",
   "description": "AMN is a wrapper on top of express. It provides middlewares and helper functions to simplify your workflow.",
   "main": "index.js",
   "directories": {
