@@ -1,17 +1,18 @@
-# [AMN](#amn)
+# AMN
 
 In the first instance, amn is the wrapper I developed for myself to work with [express](https://expressjs.com/). As long as I go further, the functionality of amn grows and evolve. Onwards I equip all my back-ends with amn as it helps me to simplify the architecture, write less code, and boost my productivity.
 
 > Why amn? I pick the name of the city from the great video game Baldur's Gate II: Shadows of Amn.
 
-### [General description](#general-description)
+### General description
 `Amn` provides the following capabilities:
-- `amn.response` Centralize and Simplify your response flow, responds to the client in a single place.
-- `amn.prettify` Prettification feature is to control better data you return to a client.
-- `amn.validate` Client’s input validation via schema employ [@hapi/joi](https://hapi.dev/)
-- `amn.in` Helper functions to work with request and client input.
-- `amn.store` Introduce a key-value store to help share data through the middleware chain.
-- `AmnError` introduces error class, which extends node js Error and provides the capability to deliver response status along with error message.
+- [Response middleware](#response-middleware). Centralize and Simplify your response flow, responds to the client in a single place.
+- [Prettification](#prettification). Prettification feature is to control better data you return to a client.
+- [Validation](#validation). Client’s input validation via schema employ [@hapi/joi](https://hapi.dev/)
+- [Request helpers](#request-helpers). Helper functions to work with request and client input.
+- [Store](#store). Introduce a key-value store to help share data through the middleware chain.
+- [Amn Error class](#amn-error-class). introduces error class, which extends node js Error and provides the capability to deliver response status along with error message.
+- [Error middleware](#error-middleware)
 - [under construction] Decorators
 
 
@@ -71,7 +72,7 @@ router.put('/your/path'
     );
 ```
 
-### [Prettification](#amn-prettification)
+### Prettification
 
 As long you are working with your data within server-side service layer, your data most likely has values you are not keen to share the the client. 
 It means before you reply you have to clean data up and prepare it. In case you have pretty much end-points which have to return same object to a client you need to be sure you post-process your data before it out.
@@ -100,7 +101,7 @@ amn.out.reply(res, { name : 'myPrettificationFunc', data : yourRowData } ); // a
 
 `amn.mw.response` middleware will check whether resonse data and pretification function avaliable to run your code behind the scene before sending anything to the cleint.
 
-### [Validation](#amn-validation)
+### Validation
 
 AMN delegeates all the validation logic to [@hapi/joi](https://hapi.dev/).
 
@@ -127,7 +128,7 @@ Needless to say, the second parameter have to be one of the following: 'body', '
 
 > AMN has no dependencies, hence, it's your responsibility to install [@hapi/joi](https://hapi.dev/) package before use `amn.validate`.
 
-### [Request helpers](#amn-request-helpers)
+### Request helpers
 
 The goal of the request handler is to provide a more convenient way to work with the client's input. Basically, it's a simple wrapper on top of `req.body`, `req.params`, `req.query`. But also allows you to get client's input from all three sources at once.
 
@@ -165,7 +166,7 @@ amn.in.files(req)
 amn.in.method(req);
 ```
 
-### [Store](#amn-store)
+### Store
 
 AMN store is a simple key-value storage to help to share data through your middleware chain.
 
@@ -189,7 +190,7 @@ const myObject = amn.store.pop(req, { name : OBJECT_NAME, strict : false});
 // return undefined
 ```
 
-### [Amn Error class](#amn-error-class)
+### Amn Error class
 
 `AmnError` class extends node js `Error` class and add responce status and extra message. 
 You should not call `AmnError` directly, the `amn.error()` create and return instance of the class.
@@ -205,7 +206,7 @@ You should not call `AmnError` directly, the `amn.error()` create and return ins
 throw amn.error({ status : 401, code : 'UNAUTHORIZED', message : 'user is not authorized', exp : 'extra message to explain more if needed' );
 ```
 
-### [Error middleware](#amn-error-handler)
+### Error middleware
 To support `AmnError`, amn provides own error middleware.
 
 Just simply add `amn.mw.error` to middleware pipline.
