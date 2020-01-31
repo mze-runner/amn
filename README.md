@@ -20,20 +20,36 @@ In the first instance, amn is the wrapper I developed for myself to work with [e
 
 AMN itself has no dependency and ultra-light; nevertheless, as being a simple wrapper on top of express, the express has to be installed upfront.
 
-Beside, AMN leverage schema validation for client's input through [@hapi/joi](https://hapi.dev/), hence, it's your responsibility to install the package before use `amn.validate`.
+Beside, AMN leverage schema validation for client's input through [@hapi/joi](https://hapi.dev/), hence, it's your responsibility to install the package before use `amn.mw.validate`.
 
 ### Initialization
 
-To build-in amn into your middleware pipeline, you have to call `amn.init` before any other router chained middlewares.
-```javascript
+To build-in amn into your middleware pipeline, you have to call `amn.mw.init` before any other router chained middlewares.
 
+You can initialize amn in two ways.
+
+```javascript
+// example 1
+app.use(amn.mw.init); // init amn itself 
+app.use(yourControllers); // your controller 
+app.use(amn.mw.response); // amn responce middleware 
+app.use(amn.mw.error); // amn error middlware
+```
+```javascript
+// example 2
 // you server.js routers call may looks like this.
 app.user('/api', 
     amn.mw.init,  // please note `amn init` first middleware at the router middlewares pipeline
     yourControllers, 
-    amn.mw.response // `amn.mw.response` close the chain and call `res.json(...) 
+    amn.mw.response,  // produce a response to a client
+    amn.mw.error // close the chain by error handler middleware
 );
 ```
+Besides, you easily can mix both scenarios.Obviously, the only matter is an order.
+- (1) amn.mw.init
+- (2) controllers
+- (3) amn.mw.response
+- (4) amn.mw.error
 
 ### Response middleware
 
