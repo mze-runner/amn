@@ -173,7 +173,7 @@ const query = amn.in.input(req, 'query');
 ```
 
 ```javascript
-// return uploaded files array (if any)
+// return uploaded files array (if any) othwewise return empty array
 amn.in.files(req)
 ```
 
