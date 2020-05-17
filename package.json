@@ -26,5 +26,10 @@
     "url": "https://github.com/mze-runner/amn/issues"
   },
   "homepage": "https://github.com/mze-runner/amn#readme",
-  "dependencies": {}
+  "dependencies": {},
+  "peerDependencies": {
+    "mongoose": "^5.0.0",
+    "debug": "^4.1.1",
+    "@hapi/joi": "^17.0.0"
+  }
 }
