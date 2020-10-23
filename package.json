@@ -18,7 +18,8 @@
     "nodejs",
     "amn",
     "schema",
-    "validation"
+    "validation",
+    "joi"
   ],
   "author": "mzerunner",
   "license": "ISC",
@@ -30,6 +31,6 @@
   "peerDependencies": {
     "mongoose": "^5.0.0",
     "debug": "^4.1.1",
-    "@hapi/joi": "^17.0.0"
+    "joi": "^17.2.0"
   }
 }

@@ -10,7 +10,7 @@ In the first instance, amn is the wrapper I developed for myself to work with [e
 
 -   [Response middleware](#response-middleware). Centralize and Simplify your response flow, responds to the client in a single place.
 -   [Prettification](#prettification). Prettification feature is to control better data you return to a client.
--   [Validation](#validation). Client’s input validation via schema employ [@hapi/joi](https://hapi.dev/)
+-   [Validation](#validation). Client’s input validation via schema employ [joi](https://joi.dev/)
 -   [Request helpers](#request-helpers). Helper functions to work with request and client input.
 -   [Store](#store). Introduce a key-value store to help share data through the middleware chain.
 -   [Amn Error class](#amn-error-class). introduces error class, which extends node js Error and provides the capability to deliver response status along with error message.
@@ -21,7 +21,7 @@ In the first instance, amn is the wrapper I developed for myself to work with [e
 
 AMN itself has no dependency and ultra-light; nevertheless, as being a simple wrapper on top of express, the express has to be installed upfront.
 
-Beside, AMN leverage schema validation for client's input through [@hapi/joi](https://hapi.dev/), hence, it's your responsibility to install the package before use `amn.mw.validate`.
+Beside, AMN leverage schema validation for client's input through [joi](https://joi.dev/), hence, it's your responsibility to install the package before use `amn.mw.validate`.
 
 ### Initialization
 
@@ -125,7 +125,7 @@ amn.out.reply(res, { name: 'myPrettificationFunc', data: yourRowData }); // amn.
 
 ### Validation
 
-AMN delegeates all the validation logic to [@hapi/joi](https://hapi.dev/).
+AMN delegeates all the validation logic to [joi](https://joi.dev/).
 
 ```javascript
 const validationSchema = Joi.object().keys({
@@ -149,7 +149,7 @@ router.put(
 
 Needless to say, the second parameter have to be one of the following: 'body', 'params', or 'query'. But you can ommit it and in this case AMN perform validation across 'body', 'params', and 'query' all together. Please note, this is not recommended scenario!
 
-> AMN has no dependencies, hence, it's your responsibility to install [@hapi/joi](https://hapi.dev/) package before use `amn.validate`.
+> AMN has no dependencies, hence, it's your responsibility to install [@joi](https://joi.dev/) package before use `amn.validate`.
 
 ### Request helpers
 
@@ -226,7 +226,12 @@ You should not call `AmnError` directly, the `amn.error()` create and return ins
  * @param {string} exp - [optional] explanation of error nature
  **/
 
-throw amn.error({ status : 401, code : 'UNAUTHORIZED', message : 'user is not authorized', exp : 'extra message to explain more if needed' );
+throw amn.error({
+    status: 401,
+    code: 'UNAUTHORIZED',
+    message: 'user is not authorized',
+    exp: 'extra message to explain more if needed',
+});
 ```
 
 ### Error middleware
