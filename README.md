@@ -149,7 +149,7 @@ router.put(
 
 Needless to say, the second parameter have to be one of the following: 'body', 'params', or 'query'. But you can ommit it and in this case AMN perform validation across 'body', 'params', and 'query' all together. Please note, this is not recommended scenario!
 
-> AMN has no dependencies, hence, it's your responsibility to install [@joi](https://joi.dev/) package before use `amn.validate`.
+> AMN has no dependencies, hence, it's your responsibility to install [joi](https://joi.dev/) package before use `amn.validate`.
 
 ### Request helpers
 
